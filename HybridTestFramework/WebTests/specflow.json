@@ -1,0 +1,19 @@
+{
+  "bindingCulture": {
+    "language": "en-us"
+  },
+  "language": {
+    "feature": "en"
+  },
+  "plugins": [
+    {
+      "name": "SpecFlow.Plus.LivingDoc",
+      "type": "Generator"
+    }
+  ],
+  "trace": {
+    "traceSuccessfulSteps": true,
+    "traceTimings": true,
+    "minTracedDuration": "0:0:0.1"
+  }
+}
