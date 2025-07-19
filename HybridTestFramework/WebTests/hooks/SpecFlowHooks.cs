@@ -24,7 +24,7 @@ namespace WebTests.hooks
         }
 
         [BeforeTestRun]
-        public void LoadConfig()
+        public static void LoadConfig()
         {
             // Initialize configuration
             var builder = new ConfigurationBuilder()

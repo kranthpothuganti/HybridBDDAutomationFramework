@@ -33,7 +33,7 @@ namespace WebTests.Steps
             _loginPage.Login("standard_user", "secret_sauce");
         }
 
-        [When(@"adds an item to the cart")]
+        [Then(@"adds an item to the cart")]
         public void WhenAddsItem()
         {
             _productsPage.AddItemToCart();
@@ -45,6 +45,11 @@ namespace WebTests.Steps
             _productsPage.GoToCart();
             var item = _driver.FindElement(By.ClassName("inventory_item_name"));
             item.ShouldContainText("Sauce Labs Backpack");
+        }
+        [Then(@"wait for (.*) seconds")]
+        public void ThenWaitForSeconds(int seconds)
+        {
+            Thread.Sleep(seconds * 1000);
         }
     }
 }

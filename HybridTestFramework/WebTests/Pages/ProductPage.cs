@@ -15,7 +15,7 @@ namespace WebTests.Pages
         }
         public void AddItemToCart(string itemName)
         {
-            Click(WaitVisible(By.Id($"add-to-cart-{itemName}")));
+            Click(WaitVisible(By.Id($"add-to-cart-{itemName.ToLower().Replace(' ','-')}")));
         }
         public void GoToCart()
         {
