@@ -35,10 +35,10 @@ jobs:
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Generate LivingDoc report
-        run: livingdoc test-assembly HybridTestFramework/WebTests/bin/Release/net9.0/WebTests.dll -t HybridTestFramework/WebTests/TestResults/TestExecution.json -o WebTests/TestResults/LivingDoc.html
+        run: livingdoc test-assembly HybridTestFramework/WebTests/bin/Release/net9.0/WebTests.dll -t HybridTestFramework/WebTests/bin/Release/net9.0/TestExecution.json -o HybridTestFramework/WebTests/TestResults/LivingDoc.html
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
           name: TestResults
-          path: WebTests/TestResults/
+          path: HybridTestFramework/WebTests/TestResults/
