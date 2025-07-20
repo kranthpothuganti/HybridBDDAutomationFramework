@@ -32,7 +32,11 @@ namespace WebTests.Steps
         {
             _loginPage.Login("standard_user", "secret_sauce");
         }
-
+        [When(@"the user logs in with username ""(.*)"" and password ""(.*)""")]
+        public void WhenUserLogsInWithCredentials(string username, string password)
+        {
+            _loginPage.Login(username, password);
+        }
         [Then(@"adds an item to the cart")]
         public void WhenAddsItem()
         {
@@ -51,5 +55,19 @@ namespace WebTests.Steps
         {
             Thread.Sleep(seconds * 1000);
         }
+        [Then(@"an error message should be shown")]
+        public void ThenAnErrorMessageIsShown()
+        {
+            var errorMessage = _driver.FindElement(By.CssSelector(".error-message-container.error"));
+            Assert.That(errorMessage.Displayed, "Error message is not displayed");
+        }
+        [Then(@"the dashboard should be displayed")]
+        public void ThenTheDashboardShouldBeDisplayed()
+        {
+            // Example: Check a unique element on the dashboard
+            var dashboardHeader = SpecFlowHooks.Driver.FindElement(By.ClassName("app_logo"));
+            Assert.That(dashboardHeader.Displayed, "Dashboard is not displayed.");
+        }
+
     }
 }

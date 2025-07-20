@@ -14,6 +14,7 @@
   "trace": {
     "traceSuccessfulSteps": true,
     "traceTimings": true,
-    "minTracedDuration": "0:0:0.1"
+    "minTracedDuration": "0:0:0.1",
+    "listener": "SpecFlow.Plus.LivingDocPlugin.Listener, SpecFlow.Plus.LivingDocPlugin"
   }
 }

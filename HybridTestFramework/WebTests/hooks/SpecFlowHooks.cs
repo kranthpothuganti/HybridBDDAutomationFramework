@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using NLog;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 using TestCore.Drivers;
+using TestCore.Utils;
 
 namespace WebTests.hooks
 {
@@ -26,11 +28,13 @@ namespace WebTests.hooks
         [BeforeTestRun]
         public static void LoadConfig()
         {
+            LogManagerHelper.Logger.Info("===== Test Run Started =====");
             // Initialize configuration
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             configuration = builder.Build();
+            LogManagerHelper.Logger.Info("===== Test Run Started =====");
         }
 
         [BeforeScenario]
@@ -38,6 +42,7 @@ namespace WebTests.hooks
         {
             Driver = new WebDriverFactory(configuration).CreateWebDriver();
             Driver.Manage().Window.Maximize();
+            LogManagerHelper.Logger.Info("Webdriver initialized");
         }
 
         [AfterScenario]
