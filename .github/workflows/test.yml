@@ -11,28 +11,34 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0' # Update this to match your SDK version
+          dotnet-version: '9.0' 
 
       - name: Restore dependencies
         run: dotnet restore HybridTestFramework/HybridTestFramework.sln
 
       - name: Build solution
-        run: dotnet build HybridTestFramework/HybridTestFramework.sln --configuration Release
+        run: dotnet build HybridTestFramework/HybridTestFramework.sln --configuration Release --no-restore
 
-      - name: Run tests and generate LivingDoc
-        run: |
-          dotnet tool restore
-          dotnet test HybridTestFramework/WebTests/WebTests.csproj --logger "html;LogFileName=TestResults.html"
-          dotnet livingdoc feature-folder HybridTestFramework/WebTests/Features --output HybridTestFramework/WebTests/LivingDoc.html
-          
-      - name: Upload test report
+      - name: Run WebTests
+        run: dotnet test HybridTestFramework/WebTests/WebTests.csproj --configuration Release --no-build --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Install SpecFlow+ LivingDoc CLI
+        run: dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Generate LivingDoc report
+        run: livingdoc test-assembly HybridTestFramework/WebTests/bin/Release/net9.0/WebTests.dll -t HybridTestFramework/WebTests/TestResults/TestExecution.json -o WebTests/TestResults/LivingDoc.html
+
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
-          name: TestReport
-          path: WebTests/LivingDoc.html
+          name: TestResults
+          path: WebTests/TestResults/
