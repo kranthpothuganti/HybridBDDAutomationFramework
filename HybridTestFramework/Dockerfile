@@ -9,10 +9,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-    rm google-chrome-stable_current_amd64.deb
+# Install Chrome from Google APT repo
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable \
+    xvfb fonts-liberation libatk-bridge2.0-0 libgtk-3-0 libgbm-dev libnss3 libxss1 libgconf-2-4 libxi6 libappindicator1 xdg-utils libasound2 libvulkan1 && \
+    rm -rf /var/lib/apt/lists/*
+
 
 # Set working directory
 WORKDIR /app
