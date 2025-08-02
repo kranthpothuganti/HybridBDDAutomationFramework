@@ -1,6 +1,13 @@
 #!/bin/bash
 
-TAG=$1
+# Accept input arg or fallback to env var FEATURE_TAG
+TAG=${1:-$FEATURE_TAG}
+
+if [ -z "$TAG" ]; then
+  echo "ERROR: Test tag not provided. Set as argument or environment variable FEATURE_TAG."
+  exit 1
+fi
+
 REPORT_DIR="reports/$TAG"
 mkdir -p "$REPORT_DIR"
 
