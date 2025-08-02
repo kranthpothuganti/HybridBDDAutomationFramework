@@ -17,6 +17,8 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
     xvfb fonts-liberation libatk-bridge2.0-0 libgtk-3-0 libgbm-dev libnss3 libxss1 libgconf-2-4 libxi6 libappindicator1 xdg-utils libasound2 libvulkan1 && \
     rm -rf /var/lib/apt/lists/*
 
+RUN dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI \
+ && export PATH="$PATH:/root/.dotnet/tools"
 
 # Set working directory
 WORKDIR /app
