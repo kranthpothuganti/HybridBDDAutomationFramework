@@ -6,7 +6,7 @@ REPORT_PATH="./LivingDocReports/${TAG}"
 
 mkdir -p $REPORT_PATH
 
-dotnet test HybridTestFramework.sln \
+dotnet test WebTests/WebTests.csproj \
   --filter TestCategory=$TAG \
   --logger "console;verbosity=normal"
 
