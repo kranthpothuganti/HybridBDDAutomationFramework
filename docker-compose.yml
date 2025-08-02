@@ -1,19 +1,20 @@
 version: '3.8'
+
 services:
   login_tests:
     build:
-      context: ./HybridTestFramework
+      context: .
       dockerfile: Dockerfile
     environment:
       - TAG=Login
     volumes:
-      - ./artifacts:/app/reports
+      - ./reports:/app/reports
 
   cart_tests:
     build:
-      context: ./HybridTestFramework
+      context: .
       dockerfile: Dockerfile
     environment:
       - TAG=Cart
     volumes:
-      - ./artifacts:/app/reports
+      - ./reports:/app/reports

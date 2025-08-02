@@ -1,20 +1,27 @@
-# escape=`
-FROM mcr.microsoft.com/dotnet/sdk:9.0-preview-nanoserver-ltsc2022
+# Use the official .NET SDK image
+FROM mcr.microsoft.com/dotnet/sdk:9.0
 
+# Install required dependencies for Chrome and Xvfb
+RUN apt-get update && \
+    apt-get install -y wget gnupg unzip curl xvfb libxi6 libgconf-2-4 libnss3 libxss1 libappindicator1 libindicator7 fonts-liberation libatk-bridge2.0-0 libgtk-3-0 libgbm-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Chrome
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb
+
+# Set working directory
 WORKDIR /app
 
-# Copy all content into container
+# Copy everything from current directory
 COPY . .
 
-# Restore dependencies
+# Restore and build
 RUN dotnet restore HybridTestFramework.sln
+RUN dotnet build HybridTestFramework.sln
 
-# Build solution
-RUN dotnet build HybridTestFramework.sln --no-restore
+# Make script executable
+RUN chmod +x ./HybridTestFramework/run-tests.sh
 
-# Make script executable (Windows)
-SHELL ["cmd", "/S", "/C"]
-RUN powershell -Command "Set-ExecutionPolicy Bypass -Scope Process -Force"
-
-# Use PowerShell to run tests (entrypoint will be overwritten by docker-compose)
-CMD ["powershell.exe", "-File", ".\\run-tests.ps1"]
+ENTRYPOINT ["sh", "./HybridTestFramework/run-tests.sh"]
