@@ -17,13 +17,17 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Run tests in parallel containers
-      run: docker-compose up --abort-on-container-exit --exit-code-from login_tests
+      run: docker compose up --abort-on-container-exit --exit-code-from login_tests
 
     - name: Archive LivingDoc reports
       if: always()
       run: |
-        mkdir -p artifacts
-        cp -r reports artifacts/reports
+        if [ -d reports ]; then
+          mkdir -p artifacts
+          cp -r reports artifacts/reports
+        else
+          echo "No reports directory found. Skipping copy."
+        fi
 
     - name: Upload reports as artifact
       if: always()
