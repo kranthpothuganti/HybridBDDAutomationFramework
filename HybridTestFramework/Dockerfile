@@ -7,6 +7,6 @@ COPY . .
 RUN dotnet tool restore
 RUN dotnet build HybridTestFramework.sln
 
-RUN chmod +x HybridTestFramework/run-tests.sh
+RUN chmod +x run-tests.sh
 
 ENTRYPOINT ["sh", "./run-tests.sh"]
