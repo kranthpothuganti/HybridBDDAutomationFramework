@@ -22,7 +22,7 @@ dotnet test HybridTestFramework.sln \
     --no-build
 
 # Generate LivingDoc
-dotnet livingdoc test-assembly \
+livingdoc test-assembly \
     WebTests/bin/Debug/net9.0/WebTests.dll \
     -t TestExecution.json \
     -o "$REPORT_DIR/LivingDoc.html"
