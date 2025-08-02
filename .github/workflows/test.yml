@@ -1,44 +1,33 @@
-name: Run Hybrid BDD Tests
+name: Parallel SpecFlow Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build-and-test:
-    runs-on: windows-latest
+  run-tests:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0' 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-      - name: Restore dependencies
-        run: dotnet restore HybridTestFramework/HybridTestFramework.sln
+    - name: Run tests in parallel containers
+      run: docker-compose up --abort-on-container-exit --exit-code-from login_tests
 
-      - name: Build solution
-        run: dotnet build HybridTestFramework/HybridTestFramework.sln --configuration Release --no-restore
+    - name: Archive LivingDoc reports
+      if: always()
+      run: |
+        mkdir -p artifacts
+        cp -r reports artifacts/reports
 
-      - name: Run WebTests
-        run: dotnet test HybridTestFramework/WebTests/WebTests.csproj --configuration Release --no-build --logger "trx;LogFileName=TestResults.trx"
-
-      - name: Install SpecFlow+ LivingDoc CLI
-        run: dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
-
-      - name: Add dotnet tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Generate LivingDoc report
-        run: livingdoc test-assembly HybridTestFramework/WebTests/bin/Release/net9.0/WebTests.dll -t HybridTestFramework/WebTests/bin/Release/net9.0/TestExecution.json -o HybridTestFramework/WebTests/TestResults/LivingDoc.html
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: TestResults
-          path: HybridTestFramework/WebTests/TestResults/
+    - name: Upload reports as artifact
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: LivingDocReports
+        path: artifacts/reports

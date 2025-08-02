@@ -1,3 +1,4 @@
+@Login
 Feature: User Login
 
   Background:

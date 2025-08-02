@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  login_tests:
+    build:
+      context: ./HybridTestFramework
+    container_name: login_test_container
+    volumes:
+      - ./reports:/app/LivingDocReports
+    entrypoint: ["sh", "-c", "./run-tests.sh Login"]
+
+  cart_tests:
+    build:
+      context: ./HybridTestFramework
+    container_name: cart_test_container
+    volumes:
+      - ./reports:/app/LivingDocReports
+    entrypoint: ["sh", "-c", "./run-tests.sh Cart"]

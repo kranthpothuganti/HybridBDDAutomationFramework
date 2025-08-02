@@ -1,3 +1,4 @@
+@Cart
 Feature: Add item to cart
 
   Scenario: Add backpack to cart
