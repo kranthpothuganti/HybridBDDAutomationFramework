@@ -39,14 +39,24 @@ namespace TestCore.Drivers
             options.AddUserProfilePreference("profile.password_manager_enabled", false);
             options.AddUserProfilePreference("profile.default_content_setting_values.notifications", 2);
 
-            // Additional browser arguments (optional)
+            // Essential Chrome arguments for CI / Docker
             options.AddArgument("--disable-save-password-bubble");
             options.AddArgument("--disable-notifications");
             options.AddArgument("--disable-popup-blocking");
             options.AddArgument("--disable-infobars");
-            options.AddArgument("--incognito"); // optional
+            options.AddArgument("--incognito");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-dev-shm-usage");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--headless"); // ensures headless mode
+
+            // ✅ Prevent 'user-data-dir' conflicts by generating a unique temp directory
+            string userDataDir = Path.Combine(Path.GetTempPath(), "chrome-profile-" + Guid.NewGuid());
+            Directory.CreateDirectory(userDataDir); // create folder to ensure path exists
+            options.AddArgument($"--user-data-dir={userDataDir}");
 
             return new ChromeDriver(options);
         }
+
     }
 }
