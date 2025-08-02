@@ -6,7 +6,7 @@ services:
       context: ./HybridTestFramework
       dockerfile: Dockerfile
     environment:
-      - TAG=Login
+      - FEATURE_TAG=Login
     volumes:
       - ./reports:/app/reports
 
@@ -15,6 +15,6 @@ services:
       context: ./HybridTestFramework
       dockerfile: Dockerfile
     environment:
-      - TAG=Cart
+      - FEATURE_TAG=Cart
     volumes:
       - ./reports:/app/reports
