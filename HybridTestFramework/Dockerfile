@@ -29,6 +29,6 @@ RUN dotnet restore HybridTestFramework.sln
 RUN dotnet build HybridTestFramework.sln
 
 # Make script executable
-RUN chmod +x ./HybridTestFramework/run-tests.sh
+RUN chmod +x ./run-tests.sh
 
-ENTRYPOINT ["sh", "./HybridTestFramework/run-tests.sh"]
+ENTRYPOINT ["sh", "./run-tests.sh"]
