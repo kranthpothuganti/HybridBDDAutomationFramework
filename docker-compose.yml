@@ -3,7 +3,7 @@ version: '3.8'
 services:
   login_tests:
     build:
-      context: .
+      context: ./HybridTestFramework
       dockerfile: Dockerfile
     environment:
       - TAG=Login
@@ -12,7 +12,7 @@ services:
 
   cart_tests:
     build:
-      context: .
+      context: ./HybridTestFramework
       dockerfile: Dockerfile
     environment:
       - TAG=Cart
