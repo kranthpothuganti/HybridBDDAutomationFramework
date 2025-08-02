@@ -1,12 +1,20 @@
-# HybridTestFramework/Dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS test-runner
+# escape=`
+FROM mcr.microsoft.com/dotnet/sdk:9.0-preview-nanoserver-ltsc2022
 
 WORKDIR /app
+
+# Copy all content into container
 COPY . .
 
-RUN dotnet tool restore
-RUN dotnet build HybridTestFramework.sln
+# Restore dependencies
+RUN dotnet restore HybridTestFramework.sln
 
-RUN chmod +x run-tests.sh
+# Build solution
+RUN dotnet build HybridTestFramework.sln --no-restore
 
-ENTRYPOINT ["sh", "./run-tests.sh"]
+# Make script executable (Windows)
+SHELL ["cmd", "/S", "/C"]
+RUN powershell -Command "Set-ExecutionPolicy Bypass -Scope Process -Force"
+
+# Use PowerShell to run tests (entrypoint will be overwritten by docker-compose)
+CMD ["powershell.exe", "-File", ".\\run-tests.ps1"]

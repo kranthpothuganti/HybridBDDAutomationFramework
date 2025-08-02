@@ -3,15 +3,17 @@ services:
   login_tests:
     build:
       context: ./HybridTestFramework
-    container_name: login_test_container
+      dockerfile: Dockerfile
+    environment:
+      - TAG=Login
     volumes:
-      - ./reports:/app/LivingDocReports
-    entrypoint: ["sh", "-c", "./run-tests.sh Login"]
+      - ./artifacts:/app/reports
 
   cart_tests:
     build:
       context: ./HybridTestFramework
-    container_name: cart_test_container
+      dockerfile: Dockerfile
+    environment:
+      - TAG=Cart
     volumes:
-      - ./reports:/app/LivingDocReports
-    entrypoint: ["sh", "-c", "./run-tests.sh Cart"]
+      - ./artifacts:/app/reports
